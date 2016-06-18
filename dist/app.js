@@ -5,8 +5,9 @@ initSpeech = ({speech, continuous_mode}) => {
     window.isSpeaking = true
     setSpeechResultText({text: "Listening for input"})
   }
-  speech.onend = () => {
+  recognition.onspeechend = function() {
     window.isSpeaking = false
+    recognition.stop();
   }
   speech.onresult = (event) => { doResult({event}) };
   speech.onerror = (err) => {
@@ -27,6 +28,6 @@ setSpeechResultText = ({text}) => {
 }
 
 doResult = ({event}) => {
-  var text = getTranscript({event})
+  var text = `Result: ${getTranscript({event})}`
   setSpeechResultText({text})
 };
