@@ -5,9 +5,9 @@ initSpeech = ({speech, continuous_mode}) => {
     window.isSpeaking = true
     setSpeechResultText({text: "Listening for input"})
   }
-  recognition.onspeechend = function() {
+  speech.onspeechend = function() {
     window.isSpeaking = false
-    recognition.stop();
+    speech.stop();
   }
   speech.onresult = (event) => { doResult({event}) };
   speech.onerror = (err) => {
