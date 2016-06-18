@@ -1,11 +1,56 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <script src="./app.js"></script>
-    <link rel="stylesheet" href="./app.css">
-    <title>Speech Recognition</title>
-  </head>
-  <body>
-    
-  </body>
+
+<head>
+
+<script   src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
+
+<script src="./accents.js"></script>
+<script src="./app.js"></script>
+
+<link rel="stylesheet" href="./app.css">
+
+<title>Speech Recognition</title>
+
+</head>
+
+<body>
+
+  <div id="jqueryTest">jQuery hasn't loaded. Page won't function</div>
+
+  <form action="#" id="speechForm">
+    Accent: <select dir="rtl" name="accent"></select><br>
+    <input type="submit" value="speak"></input> <br><br>
+    <div id="speechResult"></div>
+  </form>
+
+<script>
+
+  window.speech = initSpeech({ speech: SpeechRecognition() })
+  window.accents = Accents()
+
+$(function(){
+  $("#jqueryTest").remove()
+  window.jqueryReady = true
+  accents.forEach(function(accentString){
+    $("#speechForm select[name='accent']").prepend(
+      $("<option></option>").addClass("accentOption").attr("value", accentString).text(accentString)
+    )
+  })
+  $(".accentOption[value='en-US']").attr("selected", true)
+  $("#speechForm").on('submit', (event) => { formClicked(event) } )
+})
+
+formClicked = (event) => {
+  event.preventDefault();
+  if (!window.jqueryReady) { return false }
+  window.accent = $(event.currentTarget).find("option[selected]").val()
+  speech.lang = accent || "en-US"
+  speech.start();
+}
+
+</script>
+
+</body>
+
 </html>
